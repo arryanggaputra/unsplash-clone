@@ -18,9 +18,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "yarn tailwind-build && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "tailwind-dev": "npx --ignore-existing tailwindcss -i ./src/styles/tailwind.css -c ./tailwind.config.js -o ./src/styles/dist/tailwind.css --watch",
+    "tailwind-build": "NODE_ENV=production npx tailwindcss -i ./src/styles/tailwind.css -c ./tailwind.config.js -o ./src/styles/dist/tailwind.css --minify"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +41,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.4",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.15"
   }
 }
