@@ -1,9 +1,13 @@
-import React, { useCallback, useMemo, useState } from "react";
+import useOnScreen from "hooks/useOnScreen";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
 
 const ImageThumbnail: React.FC<Basic> = (props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const imageWrapper = useRef<HTMLDivElement>(null);
+  const isImageVisibleOnScreen = useOnScreen(imageWrapper, "0px");
 
   const afterLoad = useCallback(() => {
     setTimeout(() => {
@@ -26,17 +30,22 @@ const ImageThumbnail: React.FC<Basic> = (props) => {
   }, [isImageLoaded, props.blur_hash]);
 
   return (
-    <div className="h-40 overflow-hidden transition-transform hover:shadow-md rounded-md group cursor-pointer hover:scale-[120%]">
+    <div
+      ref={imageWrapper}
+      className="h-40 overflow-hidden transition-transform hover:shadow-md rounded-md group cursor-pointer hover:scale-[120%]"
+    >
       {placeholder}
-      <img
-        src={props.urls.small}
-        loading="lazy"
-        alt={props.alt_description || ""}
-        onLoad={afterLoad}
-        className={`object-cover h-full w-full rounded-md ${
-          !isImageLoaded ? "hidden" : ""
-        }`}
-      />
+      {isImageVisibleOnScreen && (
+        <img
+          src={props.urls.small}
+          loading="lazy"
+          alt={props.alt_description || ""}
+          onLoad={afterLoad}
+          className={`object-cover h-full w-full rounded-md ${
+            !isImageLoaded ? "hidden" : ""
+          }`}
+        />
+      )}
     </div>
   );
 };
