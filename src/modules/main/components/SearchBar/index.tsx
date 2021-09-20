@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
+import useStore from "modules/infrastructure/store";
+import { useHistory } from "react-router";
 
-const SearchBar = () => {
+const SearchBar: React.FC<{}> = () => {
+  const { searchKeyword, setSearchKeyword } = useStore((state) => state);
+  const history = useHistory();
+
+  const onKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter" && searchKeyword.length > 0) {
+        history.push(`/search?q=` + searchKeyword);
+      }
+    },
+    [searchKeyword, history]
+  );
+
+  const onChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchKeyword(e.target.value);
+    },
+    [setSearchKeyword]
+  );
+
   return (
-    <div className="container mx-auto px-5 md:px-0 flex flex-row gap-4">
+    <div className="mx-auto flex flex-row gap-4">
       <div className="relative flex-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -22,6 +43,9 @@ const SearchBar = () => {
           type="text"
           className="border border-gray-200 p-3 w-full rounded-full bg-gray-200 focus:outline-none hover:bg-white focus:bg-white px-10"
           placeholder="Search Photos"
+          onKeyDown={onKeyDown}
+          onChange={onChange}
+          defaultValue={searchKeyword}
         />
       </div>
       <button className=" bg-green-500 px-5 sm:px-10 rounded-full border border-green-600 text-white">
