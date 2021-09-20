@@ -1,25 +1,23 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import useStore from "modules/infrastructure/store";
 import { useHistory } from "react-router";
 
 const SearchBar: React.FC<{}> = () => {
   const { searchKeyword, setSearchKeyword } = useStore((state) => state);
   const history = useHistory();
+  const searchInput = useRef<HTMLInputElement>(null);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter" && searchKeyword.length > 0) {
-        history.push(`/search?q=` + searchKeyword);
+      if (event.key === "Enter") {
+        let keyword = searchInput.current?.value || "";
+
+        setSearchKeyword(keyword);
+
+        history.push(`/search?q=` + keyword);
       }
     },
-    [searchKeyword, history]
-  );
-
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchKeyword(e.target.value);
-    },
-    [setSearchKeyword]
+    [history, searchInput]
   );
 
   return (
@@ -42,9 +40,9 @@ const SearchBar: React.FC<{}> = () => {
         <input
           type="text"
           className="border border-gray-200 p-3 w-full rounded-full bg-gray-200 focus:outline-none hover:bg-white focus:bg-white px-10"
+          ref={searchInput}
           placeholder="Search Photos"
           onKeyDown={onKeyDown}
-          onChange={onChange}
           defaultValue={searchKeyword}
         />
       </div>

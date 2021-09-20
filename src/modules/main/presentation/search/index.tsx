@@ -17,9 +17,8 @@ const Search = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (searchKeyword) return;
     setSearchKeyword(query.get("q") || "");
-  }, [searchKeyword, query]);
+  }, [query.get("q")]);
 
   const addMorePage = useCallback(() => {
     setPage(page + 1);
