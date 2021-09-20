@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useStore from "modules/infrastructure/store";
 import useQuery from "hooks/useQuery";
 import Layout from "modules/main/components/Layout";
@@ -19,6 +13,9 @@ const Search = () => {
 
   const isLoadMoreButtonVisible = useOnScreen(loadMoreButton, "200px");
 
+  const [isNotFound, setIsNotFound] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (searchKeyword) return;
     setSearchKeyword(query.get("q") || "");
@@ -28,15 +25,27 @@ const Search = () => {
     setPage(page + 1);
   }, [page]);
 
+  const onCheckTotal = useCallback((total: number) => {
+    setIsLoading(false);
+    setIsNotFound(total < 1);
+  }, []);
+
   const allPages = [];
+
   for (let index = 0; index < page; index++) {
-    allPages.push(<Page key={index} page={index + 1} />);
+    allPages.push(
+      <Page
+        onTotalResults={index > 0 ? undefined : onCheckTotal}
+        key={index}
+        page={index + 1}
+      />
+    );
   }
 
   useEffect(() => {
-    if (!isLoadMoreButtonVisible) return;
+    if (!isLoadMoreButtonVisible || isNotFound) return;
     addMorePage();
-  }, [isLoadMoreButtonVisible]);
+  }, [isLoadMoreButtonVisible, isNotFound]);
 
   return (
     <Layout>
@@ -45,10 +54,16 @@ const Search = () => {
           {allPages}
         </div>
         <div className="p-10 text-center">
+          {isNotFound && !isLoading && (
+            <div className="p-5 rounded-md border border-gray-300 mb-10">
+              No result about "{searchKeyword}"
+            </div>
+          )}
           <button
+            disabled={isNotFound}
             ref={loadMoreButton}
             onClick={addMorePage}
-            className="bg-green-500 rounded-full text-white py-3 px-7"
+            className="bg-green-500 disabled:opacity-20  rounded-full text-white py-3 px-7"
           >
             Load more photos about "{searchKeyword}"
           </button>
