@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useStore from "modules/infrastructure/store";
 import { useHistory } from "react-router";
 
@@ -6,19 +6,25 @@ const SearchBar: React.FC<{}> = () => {
   const { searchKeyword, setSearchKeyword } = useStore((state) => state);
   const history = useHistory();
   const searchInput = useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = useState("");
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
-        let keyword = searchInput.current?.value || "";
-
-        setSearchKeyword(keyword);
-
-        history.push(`/search?q=` + keyword);
+        setSearchKeyword(inputValue);
+        history.push(`/search?q=` + inputValue);
       }
     },
-    [history, searchInput]
+    [history, inputValue]
   );
+
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  }, []);
+
+  useEffect(() => {
+    setInputValue(searchKeyword);
+  }, [searchKeyword]);
 
   return (
     <div className="mx-auto flex flex-row gap-4">
@@ -43,7 +49,8 @@ const SearchBar: React.FC<{}> = () => {
           ref={searchInput}
           placeholder="Search Photos"
           onKeyDown={onKeyDown}
-          defaultValue={searchKeyword}
+          value={inputValue}
+          onChange={onChange}
         />
       </div>
       <button className=" bg-green-500 px-5 sm:px-10 rounded-full border border-green-600 text-white">
