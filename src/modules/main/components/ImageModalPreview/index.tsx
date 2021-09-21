@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import useWindowSize from "hooks/useWindowSize";
 import { Basic } from "unsplash-js/dist/methods/photos/types";
 import ImagePreloader from "../ImageLazyLoad";
 
@@ -6,9 +7,11 @@ interface IImageModalPreview {
   onClose?: () => void;
 }
 
-const defaultImageWidth = 1080;
+const IMAGE_WIDTH = 1080;
 
 const ImageModalPreview: React.FC<Basic & IImageModalPreview> = (props) => {
+  const [windowWidth] = useWindowSize();
+
   useEffect(() => {
     document.body.style.height = "100%";
     document.body.style.overflow = "hidden";
@@ -18,7 +21,15 @@ const ImageModalPreview: React.FC<Basic & IImageModalPreview> = (props) => {
     };
   }, []);
 
-  console.log({ data: props });
+  const defaultImageWidth = useMemo(
+    () => (IMAGE_WIDTH < windowWidth ? IMAGE_WIDTH : windowWidth),
+    [windowWidth]
+  );
+
+  const imageHeight = useMemo(() => {
+    let height = props.height / (props.width / defaultImageWidth);
+    return height;
+  }, [props, defaultImageWidth]);
 
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -31,7 +42,7 @@ const ImageModalPreview: React.FC<Basic & IImageModalPreview> = (props) => {
         <div
           style={{
             width: defaultImageWidth,
-            height: props.height / (props.width / defaultImageWidth),
+            height: imageHeight,
           }}
           className="inline-block relative  my-20 rounded-lg text-left shadow-xl transform transition-all"
         >
