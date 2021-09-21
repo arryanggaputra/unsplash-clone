@@ -21,7 +21,7 @@ const ImageLazyLoad: React.FC<IImageLazyLoad> = (props) => {
   }, []);
 
   const placeholder = useMemo(() => {
-    if (isImageLoaded) return <></>;
+    if (isImageLoaded || !props.blurHash) return <></>;
     return (
       <Blurhash
         hash={props.blurHash || ""}
