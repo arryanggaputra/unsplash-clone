@@ -1,9 +1,10 @@
 export enum OrderBy {
-  LATEST = "latest",
-  POPULAR = "popular",
-  VIEWS = "views",
-  DOWNLOADS = "downloads",
-  OLDEST = "oldest",
+  latest = "latest",
+  popular = "popular",
+  views = "views",
+  downloads = "downloads",
+  oldest = "oldest",
+  relevant = "relevant",
 }
 
 export enum Orientation {

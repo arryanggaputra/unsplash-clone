@@ -1,6 +1,11 @@
 import { getPhotos } from "modules/infrastructure/http/search";
 import useStore from "modules/infrastructure/store";
-import { SearchPhotosParams } from "modules/infrastructure/types";
+import {
+  Color,
+  OrderBy,
+  Orientation,
+  SearchPhotosParams,
+} from "modules/infrastructure/types";
 import ImageThumbnail from "modules/main/components/ImageThumbnail";
 import React, { useEffect, useMemo } from "react";
 import useSWR from "swr";
@@ -12,15 +17,20 @@ interface IPage {
 const Page: React.FC<IPage> = (props) => {
   const { page, onTotalResults } = props;
 
-  const { searchKeyword } = useStore((state) => state);
+  const { searchKeyword, orientationParam, colorParam, sortByParam } = useStore(
+    (state) => state
+  );
 
   const collectionParameter: SearchPhotosParams = useMemo(
     () => ({
       query: searchKeyword,
       page,
       per_page: 30,
+      ...(orientationParam && { orientation: orientationParam as Orientation }),
+      ...(colorParam && { color: colorParam as Color }),
+      ...(sortByParam && { order_by: sortByParam as OrderBy }),
     }),
-    [searchKeyword, page]
+    [searchKeyword, page, orientationParam, colorParam, sortByParam]
   );
 
   const { data: collectionImages } = useSWR(

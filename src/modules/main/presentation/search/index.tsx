@@ -6,7 +6,17 @@ import Page from "./components/Page";
 import useOnScreen from "hooks/useOnScreen";
 
 const Search = () => {
-  const { searchKeyword, setSearchKeyword } = useStore((state) => state);
+  const {
+    searchKeyword,
+    setSearchKeyword,
+    setIsColorParamEnabled,
+    setIsSortByParamEnabled,
+    resetParam,
+
+    colorParam,
+    orientationParam,
+    sortByParam,
+  } = useStore((state) => state);
   const query = useQuery();
   const [page, setPage] = useState(1);
   const loadMoreButton = useRef<HTMLButtonElement>(null);
@@ -20,6 +30,25 @@ const Search = () => {
     setSearchKeyword(query.get("q") || "");
   }, [query.get("q")]);
 
+  useEffect(() => {
+    resetParam();
+    setIsColorParamEnabled(true);
+    setIsSortByParamEnabled(true);
+
+    return () => {
+      resetParam();
+      setIsColorParamEnabled(false);
+      setIsSortByParamEnabled(false);
+    };
+  }, []);
+
+  /**
+   * reset page to 1 if parameter change
+   */
+  useEffect(() => {
+    setPage(1);
+  }, [colorParam, orientationParam, sortByParam]);
+
   const addMorePage = useCallback(() => {
     setPage(page + 1);
   }, [page]);
@@ -29,17 +58,20 @@ const Search = () => {
     setIsNotFound(total < 1);
   }, []);
 
-  const allPages = [];
+  const renderPages = useCallback(() => {
+    const allPages = [];
 
-  for (let index = 0; index < page; index++) {
-    allPages.push(
-      <Page
-        onTotalResults={index > 0 ? undefined : onCheckTotal}
-        key={index}
-        page={index + 1}
-      />
-    );
-  }
+    for (let index = 0; index < page; index++) {
+      allPages.push(
+        <Page
+          onTotalResults={index > 0 ? undefined : onCheckTotal}
+          key={index}
+          page={index + 1}
+        />
+      );
+    }
+    return allPages;
+  }, [page]);
 
   useEffect(() => {
     if (!isLoadMoreButtonVisible || isNotFound) return;
@@ -50,7 +82,7 @@ const Search = () => {
     <Layout>
       <div className="mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 ">
-          {allPages}
+          {renderPages()}
         </div>
         <div className="p-10 text-center">
           {isNotFound && !isLoading && (
