@@ -40,7 +40,7 @@ const FilterOrientation: React.FC<{}> = () => {
     <>
       <div>
         <h3 className="font-bold text-xl mb-5">Orientation</h3>
-        {renderOptions()}
+        <div className="grid grid-cols-2 md:grid-cols-1">{renderOptions()}</div>
       </div>
     </>
   );

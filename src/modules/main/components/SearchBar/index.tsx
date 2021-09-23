@@ -16,7 +16,7 @@ const SearchBar: React.FC<{}> = () => {
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" && inputValue.length > 0) {
         setSearchKeyword(inputValue);
         history.push(`/search?q=` + inputValue);
       }
