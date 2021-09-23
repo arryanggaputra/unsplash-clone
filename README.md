@@ -16,6 +16,9 @@ Some of the techniques that I applied in this project include
 - Image lazy load
 - Zustand for global state manager
 
+## Demo
+https://unsplash-clone-three.vercel.app/
+
  
 ## How to run the web apps
 In the project directory, you can run:
