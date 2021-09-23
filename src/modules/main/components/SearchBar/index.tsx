@@ -92,7 +92,10 @@ const SearchBar: React.FC<{}> = () => {
 
             <div>
               <button
-                onClick={resetParam}
+                onClick={() => {
+                  resetParam();
+                  setShowFilter(false);
+                }}
                 className="py-2 px-5 rounded-md bg-gray-200 "
               >
                 Clear Filters
