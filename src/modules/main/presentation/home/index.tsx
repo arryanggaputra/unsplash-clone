@@ -9,6 +9,7 @@ const Home: React.FC<{}> = () => {
   const [page, setPage] = useState(1);
   const { setSearchKeyword } = useStore((state) => state);
   const loadMoreButton = useRef<HTMLButtonElement>(null);
+  const [isOnTheLastPage, setIsOnTheLastPage] = useState(false);
 
   useEffect(() => {
     setSearchKeyword("");
@@ -17,13 +18,20 @@ const Home: React.FC<{}> = () => {
   const isLoadMoreButtonVisible = useOnScreen(loadMoreButton, "200px");
 
   const addMorePage = useCallback(() => {
+    if (isOnTheLastPage) return;
     setPage(page + 1);
-  }, [page]);
+  }, [page, isOnTheLastPage]);
 
   const allPages = [];
 
+  const onTotalResult = useCallback((total: number) => {
+    setIsOnTheLastPage(total < 1);
+  }, []);
+
   for (let index = 0; index < page; index++) {
-    allPages.push(<Page key={index} page={index + 1} />);
+    allPages.push(
+      <Page key={index} page={index + 1} onTotalResult={onTotalResult} />
+    );
   }
 
   useEffect(() => {

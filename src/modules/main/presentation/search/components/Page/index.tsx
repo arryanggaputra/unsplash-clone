@@ -46,7 +46,7 @@ const Page: React.FC<IPage> = (props) => {
 
   return (
     <>
-      {collectionImages?.data.results.map((item) => {
+      {collectionImages?.data?.results?.map((item) => {
         return <ImageThumbnail key={item.id} {...item} />;
       })}
     </>

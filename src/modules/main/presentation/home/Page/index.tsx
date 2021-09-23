@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { getPhotos } from "modules/main/infrastructure/http/collections";
 import {
   CollectionsPhotosParams,
@@ -9,9 +9,11 @@ import ImageThumbnail from "modules/main/components/ImageThumbnail";
 import useStore from "modules/main/infrastructure/store";
 
 const collectionId = "2081954";
+const PER_PAGE = 30;
 
 interface IPage {
   page: number;
+  onTotalResult: (total: number) => void;
 }
 const Page: React.FC<IPage> = (props) => {
   const { page } = props;
@@ -21,19 +23,28 @@ const Page: React.FC<IPage> = (props) => {
     () => ({
       collectionId,
       page,
-      per_page: 30,
+      per_page: PER_PAGE,
       ...(orientationParam && { orientation: orientationParam as Orientation }),
     }),
     [orientationParam]
   );
 
-  const { data: collectionImages } = useSWR([collectionParameter], getPhotos);
+  const { data: collectionImages, isValidating } = useSWR(
+    [collectionParameter],
+    getPhotos
+  );
+
+  useEffect(() => {
+    if (isValidating) return;
+    props.onTotalResult(collectionImages?.data.length || 0);
+  }, [collectionImages?.data, isValidating]);
 
   return (
     <>
-      {collectionImages?.data?.map((item) => {
-        return <ImageThumbnail key={item.id} {...item} />;
-      })}
+      {collectionImages !== undefined &&
+        collectionImages?.data?.map((item) => {
+          return <ImageThumbnail key={item.id} {...item} />;
+        })}
     </>
   );
 };
