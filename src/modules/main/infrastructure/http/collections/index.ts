@@ -1,4 +1,4 @@
-import { CollectionsPhotosParams } from "modules/infrastructure/types";
+import { CollectionsPhotosParams } from "modules/main/infrastructure/types";
 import Photos from "unsplash-js/dist/methods/photos/types";
 import ApiClient from "../ApiClient";
 

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import useStore from "modules/infrastructure/store";
-import { Orientation } from "modules/infrastructure/types";
+import useStore from "modules/main/infrastructure/store";
+import { Orientation } from "modules/main/infrastructure/types";
 import FilterRadio from "../FilterRadio";
 
 const FilterOrientation: React.FC<{}> = () => {

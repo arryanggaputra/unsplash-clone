@@ -1,4 +1,4 @@
-import useStore from "modules/infrastructure/store";
+import useStore from "modules/main/infrastructure/store";
 import React, { useCallback } from "react";
 
 import { Basic } from "unsplash-js/dist/methods/photos/types";

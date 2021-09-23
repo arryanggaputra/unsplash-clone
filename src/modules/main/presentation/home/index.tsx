@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Layout from "modules/main/components/Layout";
 import Page from "./Page";
 import useOnScreen from "hooks/useOnScreen";
-import useStore from "modules/infrastructure/store";
+import useStore from "modules/main/infrastructure/store";
 
 const Home: React.FC<{}> = () => {
   const [page, setPage] = useState(1);

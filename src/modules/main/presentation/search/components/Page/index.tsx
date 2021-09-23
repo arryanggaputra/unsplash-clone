@@ -1,11 +1,11 @@
-import { getPhotos } from "modules/infrastructure/http/search";
-import useStore from "modules/infrastructure/store";
+import { getPhotos } from "modules/main/infrastructure/http/search";
+import useStore from "modules/main/infrastructure/store";
 import {
   Color,
   OrderBy,
   Orientation,
   SearchPhotosParams,
-} from "modules/infrastructure/types";
+} from "modules/main/infrastructure/types";
 import ImageThumbnail from "modules/main/components/ImageThumbnail";
 import React, { useEffect, useMemo } from "react";
 import useSWR from "swr";

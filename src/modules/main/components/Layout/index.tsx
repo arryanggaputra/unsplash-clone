@@ -1,4 +1,4 @@
-import useStore from "modules/infrastructure/store";
+import useStore from "modules/main/infrastructure/store";
 import React from "react";
 import ImageModalPreview from "../ImageModalPreview";
 import SearchBar from "../SearchBar";

@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
-import { getPhotos } from "modules/infrastructure/http/collections";
+import { getPhotos } from "modules/main/infrastructure/http/collections";
 import {
   CollectionsPhotosParams,
   Orientation,
-} from "modules/infrastructure/types";
+} from "modules/main/infrastructure/types";
 import useSWR from "swr";
 import ImageThumbnail from "modules/main/components/ImageThumbnail";
-import useStore from "modules/infrastructure/store";
+import useStore from "modules/main/infrastructure/store";
 
 const collectionId = "2081954";
 

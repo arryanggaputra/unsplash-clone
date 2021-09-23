@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import useStore from "modules/infrastructure/store";
+import useStore from "modules/main/infrastructure/store";
 import useQuery from "hooks/useQuery";
 import Layout from "modules/main/components/Layout";
 import Page from "./components/Page";

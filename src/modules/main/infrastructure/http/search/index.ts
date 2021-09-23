@@ -1,4 +1,4 @@
-import { SearchPhotosParams } from "modules/infrastructure/types";
+import { SearchPhotosParams } from "modules/main/infrastructure/types";
 import { Photos } from "unsplash-js/dist/methods/search/types/response";
 import ApiClient from "../ApiClient";
 

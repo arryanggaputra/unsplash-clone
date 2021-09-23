@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import useStore from "modules/infrastructure/store";
+import useStore from "modules/main/infrastructure/store";
 import { useHistory } from "react-router";
 import FilterColor from "./components/FilterColor";
 import FilterOrientation from "./components/FilterOrientation";
