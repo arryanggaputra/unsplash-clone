@@ -1,15 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import useStore from "modules/main/infrastructure/store";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import FilterColor from "./components/FilterColor";
 import FilterOrientation from "./components/FilterOrientation";
 import FilterSortBy from "./components/FilterSortBy";
+import LoveIcon from "../Icons/LoveIcon";
 
 const SearchBar: React.FC<{}> = () => {
   const { searchKeyword, setSearchKeyword, resetParam } = useStore(
     (state) => state
   );
   const history = useHistory();
+  const location = useLocation();
+
   const searchInput = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -60,6 +63,27 @@ const SearchBar: React.FC<{}> = () => {
             onChange={onChange}
           />
         </div>
+
+        {location.pathname !== "/likes" ? (
+          <button
+            onClick={() => {
+              history.push(`/likes`);
+            }}
+            className="bg-red-500 px-5 sm:px-10 rounded-full border border-red-600 text-white"
+          >
+            <LoveIcon className="h-5 w-5" />
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              history.push(`/`);
+            }}
+            className="bg-gray-200 px-5 sm:px-10 rounded-full border border-gray-300 text-black"
+          >
+            Home
+          </button>
+        )}
+
         <button
           onClick={() => setShowFilter(!showFilter)}
           className=" bg-green-500 px-5 sm:px-10 rounded-full border border-green-600 text-white"

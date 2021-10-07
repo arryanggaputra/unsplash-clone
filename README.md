@@ -27,3 +27,20 @@ In the project directory, you can run:
 ## How to run tailwindcss script
 In the project directory, you can run:
 `yarn tailwind-dev`
+
+
+## Likes Image Page
+- [] Add toggle like button to the image
+- [] Add another state in global state
+- [] Add middleware to the zustand global state ( local storage middleware)
+
+
+- [] Create Likes page
+- [] call the global store
+- [] add reusable thumbnail component
+
+## refactor liked image logic
+- [] add isLiked as a props to ImageThumbnail
+- [] addImageLikes logic inside global state, do in one row
+- [] add useCallback in each button on search bar
+- [] add reusable grid thumbnail
